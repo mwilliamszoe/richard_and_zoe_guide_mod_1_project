@@ -50,7 +50,7 @@ Woah! What did we just do there? The first part is simple: we added the a line t
 ![celebration](https://media.giphy.com/media/Is1O1TWV0LEJi/giphy.gif)
 
 ### Seeding the Database
-8. At this point, we could continue adding items to our database through the console, but let's be real. There are 425 train stations in New York--entering them individually would take forever!! There must be a better way...
+###8. At this point, we could continue adding items to our database through the console, but let's be real. There are 425 train stations in New York--entering them individually would take forever!! There must be a better way...
 
 Enter the seeds file. What is a seed file? It's a file, located in the db folder, where you create new instances of your classes and save them to your database. There are several ways this could happen. You could iterate over as csv file, for example, pulling out relevant data, and creating a new row in your database for every row in the file.
 
