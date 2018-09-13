@@ -1,4 +1,7 @@
-class CommandLineInterface < ActiveRecord::Base
+class CommandLineInterface
 
-    
+    def greet
+        puts "hello"
+    end
+
 end

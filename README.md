@@ -72,7 +72,7 @@ Once your file is ready, run ```rake -T``` to see which rake task you can use to
 
 
 ### CLI
-9. Okay, so we've got our databases; we've got our models; and we've got our relationships set up between them. Now, what do we do with all this stuff? We don't want our users to have to use the console every time they want to see which train lines go through fulton station, so let's create a command line interface!
+##9. Okay, so we've got our databases; we've got our models; and we've got our relationships set up between them. Now, what do we do with all this stuff? We don't want our users to have to use the console every time they want to see which train lines go through fulton station, so let's create a command line interface!
 
 First things first, open up the runfile and create a method that greets our app user. Then, let's call the method.
 ```
