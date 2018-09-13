@@ -13,19 +13,34 @@ class Cli
 
   def movie_choice
     puts "Select a movie from the list."
+    list_movies
     movie_input = gets.chomp
-    movie = Movie.find_by(title: movie_input)
-    if movie
-      puts "Great, you have chosen #{movie.title}."
-      # run movie_options method
-      movie_reviews(movie)
+    movie_instance = Movie.find_by(title: movie_input)
+    if movie_instance
+      movie_options(movie_instance)
     else
-      puts "Sorry we don't have that. Type a movie from the list." 
+      puts "Sorry, we couldn't find this movie. Please try again."
       movie_choice
     end
   end
 
-  def movie_reviews(users_movie_obj)
+  def movie_options(movie_obj)
+    puts "1. See movie reviews."
+    puts "2. Write a review for this movie"
+    puts "3. Pick a new movie"
+    n = gets.chomp
+   case n
+     when 1.to_s
+     show_movie_reviews(movie_obj)
+     when 2.to_s
+       # create_review
+       "Two"
+     when 3.to_s
+       movie_choice
+   end
+  end
+
+  def show_movie_reviews(users_movie_obj)
     reviews_arr = users_movie_obj.reviews
     if reviews_arr.empty?
       puts "its empty"
@@ -36,27 +51,29 @@ class Cli
     end
   end
 
-  # def movie_options
-    # You can read reviews or create a review. 
-    # Would you like to read a review for this movie (y/n)?
-    # if "y" run movie_reviews(movie)
-    #elsif Would you like to create a review for this movie?
-      #if "y" run create_reviews
-    #elseif Would you like to choose a new movie?
-      #if "y" run movie_choice
-    #else Sorry, out of options. Go back to the beginning.
-      # run 'run' method
-  # end
+  def create_review(movie_choice)
+    puts "Type in your name please"
+     user_name = gets.chomp
+     puts "type your review"
+     user_review = gets.chomp
+     current_critic = Critic.find_or_create_by(name: user_name)
+      your_review = Review.create(current_critic, movie_choice, user_review)
+      puts your_review
+  end
+
+
+
+
 
   # def new_critic
-  #   Whats your name?
+  #   puts "Whats your name?"
   #     critic_name = gets.chomp
   #     Critic.create(name: critic_name)
   # end
 
   # def reviewed_before?
   # Have you reviewed here before(y/n)?
-  # if y proceed if no run new_critic 
+  # if y proceed if no run new_critic
   # whats your name?
   # input = gets.chomp
   # critics_exists = Critic.find_by(name: name_input)
@@ -69,12 +86,11 @@ class Cli
   #     run reviewed_before?
   #   create a new review instance
   #     Review.create(name, title, phrase)
-  #     review instance must take in an instance of a critic, and a movie that already exists. 
+  #     review instance must take in an instance of a critic, and a movie that already exists.
   # end
 
   def run
     greet
-    list_movies
     movie_choice
   end
 
