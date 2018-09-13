@@ -64,6 +64,16 @@ class Cli
     puts your_review
   end
 
+  # def
+  #   user must be able to update a review that they made
+  #   user types in name = gets.chomp
+  #   current_critic = Critic.find_or_create_by(name: user_name)
+  #   return instance of current critic
+  #   loop through reviews of said critic
+  #   do current_critic.reviews.
+  #   method to edit the string of reviews.phrase???
+  # end
+
   def run
     greet
     movie_choice
