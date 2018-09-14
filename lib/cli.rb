@@ -106,7 +106,6 @@ class Cli
       "Sorry, that choice isn't valid. Please try again."
       review_options
     end
-    movie_choice
   end
 
   def create_review(movie_instance)
@@ -130,10 +129,17 @@ class Cli
       updatable_review.phrase = user_response
       updatable_review.save
     else
-      puts "Sorry, you do not have authorization to change this review. What would you like to do?"
+      log_in_options
+    end
+  end
+
+
+    def log_in_options
+      puts "Sorry, you do not have authorization do that. What would you like to do?"
       puts "1. Log in"
       puts "2. See movies"
       puts "3. Create a new Review"
+      puts "4. Exit the app"
       user_response = gets.chomp
       case user_response
         when "1"
@@ -142,17 +148,23 @@ class Cli
           movie_choice
         when "3"
           create_review(updatable_review.movie)
+        when "4"
+          exit!
         else
-          puts "Invalid choice. Here is the movie list again :("
-          movie_choice
+          puts "Invalid choice."
+          log_in_options
       end
-    end
-  end 
+    end 
 
   def delete_a_review(id)
-    Review.find_by(id: id).destroy
+    destroy_review = Review.find_by(id: id)
+    if @@critic == destroy_review.critic
+    destroy_review.destroy
+    # binding.pry
     puts "Review with id number #{id} review has been deleted."
-    movie_choice
+    else
+      log_in_options
+    end
   end
 
   def run
