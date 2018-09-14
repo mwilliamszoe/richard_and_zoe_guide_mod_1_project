@@ -4,13 +4,6 @@ class Cli
 
   @@critic = nil
 
-  # def greet
-  #   puts "Welcome to The Movie Reviewer! Type in a movie from the list to see more options."
-  # end
-
-  # def main_menu
-  #   puts "What would you like to do? See our m"
-  # end
 
   def log_in
     puts "Who are you?"

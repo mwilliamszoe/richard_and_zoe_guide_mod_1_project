@@ -86,7 +86,7 @@ Now, let's run the file from the terminal with ``` ruby bin/run.rb ```.
 
 We should see our welcome message printed. Rad!! But wait--why are we defining this method in the runfile? Isn't that going to get messy? Answer: yes.
 
-10. Instead, let's create a Command Line Interface model in our lib directory. This model won't have a corresponding table, it's just going to be a place for us to write methods relating to the interface of our app. Now, let's move the greet method definition into the Command Line Interface model.
+10. ###Instead, let's create a Command Line Interface model in our lib directory. This model won't have a corresponding table, it's just going to be a place for us to write methods relating to the interface of our app. Now, let's move the greet method definition into the Command Line Interface model.
 
 Now, our ```bin/run.rb``` should create a new instance of our Command Line Interface model and call the instance method, greet.
 
