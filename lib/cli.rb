@@ -3,7 +3,7 @@ ActiveRecord::Base.logger = nil
 class Cli
 
   @@critic = nil
-
+  @@current_movie_instance
 
   def log_in
     puts "Who are you?"
@@ -22,16 +22,16 @@ class Cli
     puts "Welcome to Movie Town! Select a movie from the list."
     list_movies
     movie_input = gets.chomp
-    movie_instance = Movie.find_by(title: movie_input)
-    if movie_instance
-      movie_options(movie_instance)
+    @@current_movie_instance = Movie.find_by(title: movie_input)
+    if @@current_movie_instance
+      movie_options
     else
       puts "Sorry, we couldn't find this movie. Please try again."
       movie_choice
       end
   end
 
-  def movie_options(movie_obj)
+  def movie_options
     puts "Type in the number of your selected option or press 4 to exit the app."
     puts "1. See movie reviews."
     puts "2. Write a review for this movie"
@@ -40,21 +40,21 @@ class Cli
     n = gets.chomp
    case n
      when 1.to_s
-     show_movie_reviews(movie_obj)
+      show_movie_reviews
      when 2.to_s
-      create_review(movie_obj)
+      create_review
      when 3.to_s
        movie_choice
      when 4.to_s
       exit!
      else
       "Sorry not valid input. Please make another selection."
-      movie_options(movie_obj)
+      movie_options
    end
   end
 
-  def display_reviews(users_movie_obj)
-    reviews_arr = users_movie_obj.reviews
+  def display_reviews
+    reviews_arr = @@current_movie_instance.reviews
     if reviews_arr.empty?
       puts "There are no reviews for this movie."
     else
@@ -65,12 +65,17 @@ class Cli
     end
   end
 
-  def show_movie_reviews(users_movie_obj)
-    display_reviews(users_movie_obj)
-    review_options(users_movie_obj)
+  def show_movie_reviews
+    display_reviews
+    review_options
   end
 
-  def review_options(movie_instance)
+  def which_review
+    puts "Which review? You can simply enter the number next to your chosen review."
+    gets.chomp.to_i
+  end
+
+  def review_options
     puts "What would you like to do now?"
     puts "1. Edit a review"
     puts "2. Delete a review"
@@ -80,17 +85,14 @@ class Cli
     response = gets.chomp
     case response
     when "1"
-      puts "Which review? You can simply enter the number next to your chosen review."
-      id = gets.chomp.to_i
+      id = which_review
       change_a_review(id)
     when "2"
-      puts "Which review? You can simply enter the number next to your chosen review."
-      # puts "#{Review.all.id}.#{Review.all}."
-      display_reviews(movie_instance)
-      id = gets.chomp.to_i
+      display_reviews
+      id = which_review
       delete_a_review(id)
     when "3"
-      create_review(movie_instance)
+      create_review
     when "4"
       movie_choice
     when "5"
@@ -101,14 +103,13 @@ class Cli
     end
   end
 
-  def create_review(movie_instance)
+  def create_review
     puts "Type in your name please"
     user_name = gets.chomp
     puts "type your review"
     user_review = gets.chomp
     current_critic = Critic.find_or_create_by(name: user_name)
-    your_review = Review.create(critic_id: current_critic.id, movie_id: movie_instance.id, phrase: user_review)
-    binding.pry
+    your_review = Review.create(critic_id: current_critic.id, movie_id: @@current_movie_instance.id, phrase: user_review)
     puts "Great! Your review '#{your_review.phrase}' has been created."
     movie_choice
   end
@@ -140,7 +141,7 @@ class Cli
         when "2"
           movie_choice
         when "3"
-          create_review(updatable_review.movie)
+          create_review
         when "4"
           exit!
         else
@@ -153,7 +154,6 @@ class Cli
     destroy_review = Review.find_by(id: id)
     if @@critic == destroy_review.critic
     destroy_review.destroy
-    # binding.pry
     puts "Review with id number #{id} review has been deleted."
     else
       log_in_options
